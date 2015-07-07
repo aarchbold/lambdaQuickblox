@@ -83,47 +83,49 @@ exports.handler = function(event, context) {
                     Key: 'HLS400k-' + newKey,
                     ThumbnailPattern: 'thumbs-' + newKey + '-{count}',
                     PresetId: HLS400k,
-                    SegmentDuration: '5',
+                    SegmentDuration: '10',
                     Rotate: 'auto'
                   },
                   {
                     Key: 'HLS600k-' + newKey,
                     ThumbnailPattern: '',
                     PresetId: HLS600k,
-                    SegmentDuration: '5',
+                    SegmentDuration: '10',
                     Rotate: 'auto'
                   },
                   {
                     Key: 'HLS1m-' + newKey,
                     ThumbnailPattern: '',
                     PresetId: HLS1m,
-                    SegmentDuration: '5',
+                    SegmentDuration: '10',
                     Rotate: 'auto'
                   },
                   {
                     Key: 'HLS15m-' + newKey,
                     ThumbnailPattern: '',
                     PresetId: HLS15m,
-                    SegmentDuration: '5',
+                    SegmentDuration: '10',
                     Rotate: 'auto'
                   },
                   {
                     Key: 'HLS2m-' + newKey,
                     ThumbnailPattern: '',
                     PresetId: HLS2m,
-                    SegmentDuration: '5',
+                    SegmentDuration: '10',
                     Rotate: 'auto'
                   },
                   {
                     Key: 'HLS160k-' + newKey,
                     ThumbnailPattern: '',
                     PresetId: HLS160k,
+                    SegmentDuration: '10',
                     Rotate: 'auto'
                   },
                   {
                     Key: 'HLS64k-' + newKey,
                     ThumbnailPattern: '',
                     PresetId: HLS64k,
+                    SegmentDuration: '10',
                     Rotate: 'auto'
                   }
                 ],
@@ -136,7 +138,9 @@ exports.handler = function(event, context) {
                          'HLS15m-' + newKey,
                          'HLS1m-' + newKey,
                          'HLS600k-' + newKey,
-                         'HLS400k-' + newKey
+                         'HLS400k-' + newKey,
+                         'HLS160k-' + newKey,
+                         'HLS64k-' + newKey
                       ]
                    }
                 ]
