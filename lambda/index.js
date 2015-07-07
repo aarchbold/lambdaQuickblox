@@ -1,5 +1,6 @@
 console.log('Checking newly uploaded file');
 var AWS = require('aws-sdk');
+var QB = require('quickblox');
 var s3 = new AWS.S3({apiVersion: '2006-03-01'});
 var eltr = new AWS.ElasticTranscoder({
     apiVersion: '2012-09-25',
@@ -21,6 +22,15 @@ var HLS64k = '1351620000001-200071';
 var webMPresetCustom = 'webMPreset';
 // Our custom ogg format
 var oggPresetCustom = 'oggPreset';
+// configure Quickblox
+var QBconfig = {
+    ssl: false,
+    debug: false
+},
+var loginCreds = {email: 'pulsegrenade@gmail.com', password: '2sc00ps!'};
+
+// initialize a Quickblox instance
+QB.init(23981, 'gCO3vctnZqAE4Vp', 'X4ws9XmgNhH3ypz', QBconfig);
  
 exports.handler = function(event, context) {
    // Get the object from the event and show its content type
@@ -59,7 +69,7 @@ exports.handler = function(event, context) {
             var newKey = key.split('.')[0];
             var params = {
                 PipelineId: pipelineId,
-                OutputKeyPrefix: today,
+                OutputKeyPrefix: key.split('.')[0] + '/',
                 Input: {
                   Key: key,
                   FrameRate: 'auto',
@@ -120,7 +130,7 @@ exports.handler = function(event, context) {
                 Playlists: [
                    {
                       Format: 'HLSv3',
-                      Name: newKey + '.m3u8',
+                      Name: newKey,
                       OutputKeys: [
                          'HLS2m-' + newKey,
                          'HLS15m-' + newKey,
@@ -135,10 +145,37 @@ exports.handler = function(event, context) {
             if (error) {
               console.log('Failed to send new video ' + key + ' to ET');
               console.log(error);
-              context.done(null,'');
+              context.done(null,'Epic fail!!!');
             } else {
+              function updateUrl() {
+                  var vidData = {
+                      _id: key.split('.')[0], // id of the db item we want to update
+                      url: key
+                  };
+                  QB.data.update("Videos", vidData, function(err, response){
+                      console.log('updated DB object');
+                      context.done(null,'GREAT SUCCESS!!!');
+                  });
+              }
+              function logInAsAdmin() {
+                  QB.login(loginCreds, function(err, result) {
+                      // callback function
+                      console.log('logged in as pulsegrenade@gmail.com');
+                      console.log('Now has write access');
+                      //console.log(err);
+                      updateUrl();
+                  });
+              }
+              // Start a chain of functions that will ultimately update Quickblox
+              QB.createSession(function(err, result) {
+                  // callback function
+                  console.log('Session created: Read access only');
+                  //getVids();
+                  // log in as administrator
+                  logInAsAdmin();
+              });
               console.log(data);
-              context.done(null,'');
+              console.log('Now attempt to contact QB.');
             }
           });
           } else {
