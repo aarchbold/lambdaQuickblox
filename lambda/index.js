@@ -26,7 +26,7 @@ var oggPresetCustom = 'oggPreset';
 var QBconfig = {
     ssl: false,
     debug: false
-},
+};
 var loginCreds = {email: 'pulsegrenade@gmail.com', password: '2sc00ps!'};
 
 // initialize a Quickblox instance
@@ -80,49 +80,49 @@ exports.handler = function(event, context) {
                 },
                 Outputs: [
                   {
-                    Key: 'HLS400k-' + newKey,
-                    ThumbnailPattern: 'thumbs-' + newKey + '-{count}',
+                    Key: 'video_400k_',
+                    ThumbnailPattern: 'thumb_' + newKey + '-{count}',
                     PresetId: HLS400k,
                     SegmentDuration: '10',
                     Rotate: 'auto'
                   },
                   {
-                    Key: 'HLS600k-' + newKey,
+                    Key: 'video_600k_',
                     ThumbnailPattern: '',
                     PresetId: HLS600k,
                     SegmentDuration: '10',
                     Rotate: 'auto'
                   },
                   {
-                    Key: 'HLS1m-' + newKey,
+                    Key: 'video_1m_',
                     ThumbnailPattern: '',
                     PresetId: HLS1m,
                     SegmentDuration: '10',
                     Rotate: 'auto'
                   },
                   {
-                    Key: 'HLS15m-' + newKey,
+                    Key: 'video_15m_',
                     ThumbnailPattern: '',
                     PresetId: HLS15m,
                     SegmentDuration: '10',
                     Rotate: 'auto'
                   },
                   {
-                    Key: 'HLS2m-' + newKey,
+                    Key: 'video_2m_',
                     ThumbnailPattern: '',
                     PresetId: HLS2m,
                     SegmentDuration: '10',
                     Rotate: 'auto'
                   },
                   {
-                    Key: 'HLS160k-' + newKey,
+                    Key: 'video_160k_',
                     ThumbnailPattern: '',
                     PresetId: HLS160k,
                     SegmentDuration: '10',
                     Rotate: 'auto'
                   },
                   {
-                    Key: 'HLS64k-' + newKey,
+                    Key: 'video_64k_',
                     ThumbnailPattern: '',
                     PresetId: HLS64k,
                     SegmentDuration: '10',
@@ -132,15 +132,15 @@ exports.handler = function(event, context) {
                 Playlists: [
                    {
                       Format: 'HLSv3',
-                      Name: newKey,
+                      Name: 'index',
                       OutputKeys: [
-                         'HLS2m-' + newKey,
-                         'HLS15m-' + newKey,
-                         'HLS1m-' + newKey,
-                         'HLS600k-' + newKey,
-                         'HLS400k-' + newKey,
-                         'HLS160k-' + newKey,
-                         'HLS64k-' + newKey
+                         'video_2m_',
+                         'video_15m_',
+                         'video_1m_',
+                         'video_600k_',
+                         'video_400k_',
+                         'video_160k_',
+                         'video_64k_'
                       ]
                    }
                 ]
