@@ -22,15 +22,26 @@ var HLS64k = '1351620000001-200071';
 var webMPresetCustom = 'webMPreset';
 // Our custom ogg format
 var oggPresetCustom = 'oggPreset';
+
 // configure Quickblox
 var QBconfig = {
-    ssl: false,
-    debug: false
+    appId: 23981,
+    authKey: 'gCO3vctnZqAE4Vp',
+    authSecret: 'X4ws9XmgNhH3ypz',
+    config: {
+        ssl: false,
+        debug: false
+    },
+    loginCreds: {
+        email: 'pulsegrenade@gmail.com',
+        password: '2sc00ps!'
+    },
+    customObject: 'Videos'
 };
-var loginCreds = {email: 'pulsegrenade@gmail.com', password: '2sc00ps!'};
+
 
 // initialize a Quickblox instance
-QB.init(23981, 'gCO3vctnZqAE4Vp', 'X4ws9XmgNhH3ypz', QBconfig);
+QB.init(QBconfig.appId, QBconfig.authKey, QBconfig.authSecret, QBconfig.config);
  
 exports.handler = function(event, context) {
    // Get the object from the event and show its content type
@@ -159,9 +170,10 @@ exports.handler = function(event, context) {
                   var qbData = {
                       _id: qbId, // id of the db item we want to update
                       url: videoUrl, // the url of the transcoded video
-                      thumbnail: thumbUrl // the url of the thumbnail
+                      thumbnail: thumbUrl, // the url of the thumbnail
+                      Live: 'Yes' // sets the quickblox record to live
                   };
-                  QB.data.update('Videos', qbData, function(err, response){
+                  QB.data.update(QBconfig.customObject, qbData, function(err, response){
                       console.log('updated DB object');
                       console.log(videoUrl);
                       console.log(thumbUrl);
@@ -169,7 +181,7 @@ exports.handler = function(event, context) {
                   });
               }
               function logInAsAdmin() {
-                  QB.login(loginCreds, function(err, result) {
+                  QB.login(QBconfig.loginCreds, function(err, result) {
                       // once logged in as QB admin, update the custom object URL
                       console.log('logged in as admin with write access');
                       updateUrl();
