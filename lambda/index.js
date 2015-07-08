@@ -81,7 +81,7 @@ exports.handler = function(event, context) {
                 Outputs: [
                   {
                     Key: 'video_400k_',
-                    ThumbnailPattern: 'thumb_' + newKey + '-{count}',
+                    ThumbnailPattern: newKey + '-thumbnail' + '-{count}',
                     PresetId: HLS400k,
                     SegmentDuration: '10',
                     Rotate: 'auto'
@@ -152,30 +152,33 @@ exports.handler = function(event, context) {
               context.done(null,'Epic fail!!!');
             } else {
               function updateUrl() {
-                  var vidData = {
-                      _id: key.split('.')[0], // id of the db item we want to update
-                      url: key
+                  var qbId = key.split('.')[0];
+                  var cdnPrefix = 'http://d37wqlk2mf8p41.cloudfront.net/';
+                  var videoUrl = cdnPrefix + qbId + '/index.m3u8';
+                  var thumbUrl = cdnPrefix + qbId + '/ '+ qbId + '-thumbnail-00001.png';
+                  var qbData = {
+                      _id: qbId, // id of the db item we want to update
+                      url: videoUrl, // the url of the transcoded video
+                      thumbnail: thumbUrl // the url of the thumbnail
                   };
-                  QB.data.update("Videos", vidData, function(err, response){
+                  QB.data.update('Videos', qbData, function(err, response){
                       console.log('updated DB object');
+                      console.log(videoUrl);
+                      console.log(thumbUrl);
                       context.done(null,'GREAT SUCCESS!!!');
                   });
               }
               function logInAsAdmin() {
                   QB.login(loginCreds, function(err, result) {
-                      // callback function
-                      console.log('logged in as pulsegrenade@gmail.com');
-                      console.log('Now has write access');
-                      //console.log(err);
+                      // once logged in as QB admin, update the custom object URL
+                      console.log('logged in as admin with write access');
                       updateUrl();
                   });
               }
               // Start a chain of functions that will ultimately update Quickblox
               QB.createSession(function(err, result) {
-                  // callback function
+                  // when session has been created, log in as administrator
                   console.log('Session created: Read access only');
-                  //getVids();
-                  // log in as administrator
                   logInAsAdmin();
               });
               console.log(data);
