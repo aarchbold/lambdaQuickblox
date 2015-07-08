@@ -7,7 +7,9 @@ var aws = require('aws-sdk'),
         ssl: false,
         debug: false
     },
-    loginCreds = {email: 'pulsegrenade@gmail.com', password: '2sc00ps!'};
+    loginCreds = {email: 'pulsegrenade@gmail.com', password: '2sc00ps!'},
+    // ID of pipeline
+    pipelineId = '1431419301332-5m0ghn';
 
 // initialize a Quickblox instance
 QB.init(23981, 'gCO3vctnZqAE4Vp', 'X4ws9XmgNhH3ypz', QBconfig);
